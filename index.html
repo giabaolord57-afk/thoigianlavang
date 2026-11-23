@@ -417,7 +417,7 @@ svg:not(.symbol-bank) use{fill:none;stroke:currentColor;stroke-width:2;stroke-li
 .member-sigil svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:2}
 .member-identity{position:relative;z-index:2}
 .member-name{display:block;font-family:'LocalDisplay','LocalInter',Arial,sans-serif;font-size:calc(var(--u)*1.68);line-height:1.4;font-weight:900;color:var(--fg);margin:0 0 calc(var(--u)*.55)}
-.member-role{display:block;font-size:calc(var(--u)*1.12);line-height:1.35;margin:0;color:var(--gold);font-weight:650}
+.member-role{display:block;font-size:calc(var(--u)*1.12);line-height:1.4;margin:0;color:var(--gold);font-weight:650;white-space:pre-line;overflow-wrap:anywhere}
 .sc[data-layout='members'] .stamp{top:7%}
 /* Retry game: wrong answers fade only after being tried, others stay clickable. */
 .answer.wrong:disabled{cursor:not-allowed;opacity:.75}
@@ -866,7 +866,7 @@ const S = [
   "members": [
    {
     "name": "Gia Bảo",
-    "role": "Viết nội dung và lên ý tưởng"
+     "role": "Viết nội dung và lên ý tưởng\nThiết kế slide"
    },
    {
     "name": "Tường An",
@@ -1234,7 +1234,7 @@ const $$=(sel,root=document)=>Array.from(root.querySelectorAll(sel));
 const enc=(s)=>String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 let edits={};let images={};let gameChoices=Array(G.length).fill(null),slideNodes=[],current=0,transitioning=false,editorOpen=false,overviewOpen=false,lightboxOpen=false,videoOpen=false,quietUntil=0,scrollAccum=0,scrollReset=null,celebrated=false;
 const storageKey='timegold:v15:editor:'+location.pathname;
-function loadLocal(){try{const x=JSON.parse(localStorage.getItem(storageKey)||'{}');edits={...(window.__EDITS?.text||{}),...(x.text||{})};images={...(window.__EDITS?.images||{}),...(x.images||{})}}catch(err){edits={...(window.__EDITS?.text||{})};images={...(window.__EDITS?.images||{})}}}
+function loadLocal(){try{const x=JSON.parse(localStorage.getItem(storageKey)||'{}');edits={...(window.__EDITS?.text||{}),...(x.text||{})};images={...(window.__EDITS?.images||{})}}catch(err){edits={...(window.__EDITS?.text||{})};images={...(window.__EDITS?.images||{})}} /* One-time migration: update Gia Bảo’s previously saved role without affecting future edits. */try{const marker=storageKey+':gia-bao-role-v2';if(!localStorage.getItem(marker)){const k='1:members.0.role',wanted='Viết nội dung và lên ý tưởng\nThiết kế slide';if(Object.prototype.hasOwnProperty.call(edits,k)&&edits[k]!==wanted){edits[k]=wanted;localStorage.setItem(storageKey,JSON.stringify({text:edits,images}))}localStorage.setItem(marker,'1')}}catch(_){}}
 function persist(){try{localStorage.setItem(storageKey,JSON.stringify({text:edits,images}))}catch(e){if(editorOpen)showEditorMessage('Không lưu được vào trình duyệt: bộ nhớ có thể đã đầy. Hãy chọn “Lưu HTML”.')}}
 function V(i,key,raw){return Object.prototype.hasOwnProperty.call(edits,`${i}:${key}`)?edits[`${i}:${key}`]:raw}
 function dataEdit(i,key,text,label,extra=''){return `data-edit="${enc(key)}" data-edit-label="${enc(label||key)}" ${extra||''}`}
@@ -1274,7 +1274,7 @@ function revealSlide(i){current=i;slideNodes.forEach((el,j)=>{if(j===i)el.classN
 function navigate(to,force=false){if(videoOpen){if(to<current)closeOutro();else return;}if((transitioning&&!force)||editorOpen||overviewOpen||lightboxOpen)return;if(!force&&to>current&&S[current].game!==undefined&&gameChoices[S[current].game]!==G[S[current].game].key){announce('Hãy chọn đáp án đúng để tiếp tục.');return;}if(to<0||to>=S.length){if(to>=S.length&&current===S.length-1){if(!celebrated)triggerFinale();else openOutro();}return}if(to===current)return;const prev=current,dir=to>current?1:-1;transitioning=true;quietUntil=performance.now()+1560;stage.style.setProperty('--dir',dir);const wipe=$('#wipe');wipe.classList.toggle('rev',dir<0);wipe.classList.add('active');slideNodes[to].className='sc pre';slideNodes[prev].className='sc out';setTimeout(()=>{current=to;slideNodes[prev].className='sc gone';slideNodes[to].className='sc on';S.forEach((_,k)=>{if(k!==to&&k!==prev)slideNodes[k].className=Math.abs(k-to)===1?'sc pre':'sc gone'});updateUI();setHash(to);warmSlides(to);if(editorOpen)refreshEditor()},665);setTimeout(()=>{wipe.classList.remove('active');transitioning=false;quietUntil=performance.now()+190},1420)}
 function wheelHandler(e){if(videoOpen){e.preventDefault();return}if(e.target.closest('#editor,#overview,#lightbox'))return;if(editorOpen||overviewOpen||lightboxOpen||transitioning||performance.now()<quietUntil){e.preventDefault();return}e.preventDefault();const raw=Math.max(-150,Math.min(150,e.deltaY*(e.deltaMode===1?12:e.deltaMode===2?300:1)));scrollAccum+=raw;clearTimeout(scrollReset);scrollReset=setTimeout(()=>{scrollAccum=0},140);if(Math.abs(scrollAccum)<55)return;const d=Math.sign(scrollAccum);scrollAccum=0;onStep(d)}
 function onStep(dir){if(videoOpen){if(dir<0)closeOutro();return}if(dir>0&&current===S.length-1){if(!celebrated)triggerFinale();else openOutro();return}navigate(current+dir)}
-/* Slide gestures: swipe/drag RIGHT = next, LEFT = previous.  Ignore controls/overlays. */
+/* Slide gestures: swipe/drag LEFT = next, RIGHT = previous. Ignore controls/overlays. */
 const slideGestureBlocked='button,a,input,textarea,select,[contenteditable],#editor,#overview,#lightbox,#videoOutro,[data-memory]';
 function gestureAllowed(target){return !videoOpen&&!editorOpen&&!overviewOpen&&!lightboxOpen&&!transitioning&&performance.now()>=quietUntil&&!target.closest(slideGestureBlocked)}
 function touchHandlers(){
@@ -1289,7 +1289,7 @@ function touchHandlers(){
   const dx=e.changedTouches[0].clientX-start.x,dy=e.changedTouches[0].clientY-start.y;
   start=null;
   if(videoOpen||editorOpen||overviewOpen||lightboxOpen||transitioning||performance.now()<quietUntil)return;
-  if(Math.abs(dx)>62&&Math.abs(dx)>Math.abs(dy)*1.2)onStep(dx>0?1:-1);
+  if(Math.abs(dx)>62&&Math.abs(dx)>Math.abs(dy)*1.2)onStep(dx>0?-1:1);
   else if(Math.abs(dy)>55&&Math.abs(dy)>Math.abs(dx)*1.2)onStep(dy<0?1:-1);
  },{passive:true});
  stage.addEventListener('touchcancel',()=>{start=null},{passive:true});
@@ -1309,7 +1309,7 @@ function mouseDragHandlers(){
   if(Math.abs(dx)<68||Math.abs(dx)<Math.abs(dy)*1.25)return;
   if(videoOpen||editorOpen||overviewOpen||lightboxOpen||transitioning||performance.now()<quietUntil)return;
   ignoreNextClick=true;
-  onStep(dx>0?1:-1);
+  onStep(dx>0?-1:1);
  });
  window.addEventListener('pointercancel',()=>{start=null});
  stage.addEventListener('dragstart',e=>{if(start)e.preventDefault()});
