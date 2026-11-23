@@ -98,6 +98,12 @@ body[data-th='dark'],body[data-th='opener'],body[data-th='finale']{--ui:#f4d796;
 .visual-slot.has-photo .hero-icon{opacity:.08}
 .visual-label{position:absolute;bottom:2%;left:50%;translate:-50% 0;font-family:'LocalSerif',Georgia,serif;font-size:calc(var(--u)*1.5);font-style:italic;color:var(--gold);white-space:nowrap;z-index:5}
 .visual-slot .rings{position:absolute;inset:1%;width:98%;height:98%;animation:spinSlow 60s linear infinite;opacity:.65;pointer-events:none}
+.clock-hands{position:absolute;inset:0;display:block;pointer-events:none;opacity:0;z-index:4}
+.clock-hands .clock-hand{position:absolute;left:50%;top:50%;display:block;border-radius:999px;transform-origin:50% calc(100% - var(--u)*.18);translate:-50% -100%;background:linear-gradient(180deg,#fff7cb 0%,#f5d07d 45%,#d49a45 100%);box-shadow:0 0 calc(var(--u)*.75) rgba(255,232,165,.5),0 0 calc(var(--u)*1.5) rgba(255,201,96,.25)}
+.clock-hands .hand-minute{width:calc(var(--u)*.34);height:calc(var(--u)*8.6);rotate:126deg}
+.clock-hands .hand-hour{width:calc(var(--u)*.46);height:calc(var(--u)*5.9);rotate:22deg;opacity:.95}
+.clock-hands .clock-cap{position:absolute;left:50%;top:50%;width:calc(var(--u)*1.15);height:calc(var(--u)*1.15);translate:-50% -50%;border-radius:50%;background:radial-gradient(circle,#fff6ca 0%,#f4cf78 58%,#b9832f 100%);box-shadow:0 0 calc(var(--u)*.9) rgba(255,221,126,.7)}
+
 .path-lines{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none;opacity:.5}
 .path-lines path{stroke:var(--gold);stroke-width:1.3;fill:none;stroke-dasharray:7 9;stroke-dashoffset:0;animation:dashes 22s linear infinite}
 .draw-path{stroke-dasharray:1;stroke-dashoffset:1;animation:drawPath 4s .3s var(--e) both}
@@ -222,7 +228,7 @@ body[data-th='dark'],body[data-th='opener'],body[data-th='finale']{--ui:#f4d796;
 #ui .top-left{position:absolute;top:3.7%;left:5.3%;display:flex;gap:calc(var(--u)*1.3);align-items:center;font-weight:800;font-size:calc(var(--u)*1.05);letter-spacing:.15em}
 #ui .top-right{position:absolute;top:3.6%;right:5%;font-size:calc(var(--u)*1.05);font-weight:800;letter-spacing:.12em;color:var(--uidim)}
 #ui .bottom-ui{position:absolute;left:5.2%;right:5.2%;bottom:4%;display:flex;align-items:center;justify-content:space-between}
-#ui button,.overview-close,.editor-toggle{pointer-events:auto;border:1px solid rgba(230,190,124,.4);background:rgba(9,22,28,.40);backdrop-filter:blur(8px);color:var(--ui);border-radius:calc(var(--u)*.7);padding:calc(var(--u)*.55) calc(var(--u)*.85);font-weight:800;font-size:calc(var(--u)*1.05);transition:transform .2s,border-color .2s,background .2s}
+#ui button,.overview-close{pointer-events:auto;border:1px solid rgba(230,190,124,.4);background:rgba(9,22,28,.40);backdrop-filter:blur(8px);color:var(--ui);border-radius:calc(var(--u)*.7);padding:calc(var(--u)*.55) calc(var(--u)*.85);font-weight:800;font-size:calc(var(--u)*1.05);transition:transform .2s,border-color .2s,background .2s}
 body[data-th='paper'] #ui button{background:rgba(255,248,234,.71)}
 #ui button:hover{transform:translateY(-2px);border-color:var(--ui)}
 #ui button:active{transform:translateY(1px)}
@@ -250,23 +256,6 @@ body[data-th='paper'] #ui button{background:rgba(255,248,234,.71)}
 .overview-tile .small-num{font-family:'LocalDisplay',sans-serif;font-weight:900;color:#e6bb6f;font-size:calc(var(--u)*1.55)}
 .overview-tile .small-title{font-size:calc(var(--u)*1.15);line-height:1.25;font-weight:800}
 .overview-close{position:absolute;right:3%;top:3%}
-/* Editor mode with live editable text + image slots */
-#editor{position:absolute;top:0;right:0;bottom:0;width:min(42%,460px);background:rgba(14,25,34,.985);border-left:1px solid #c7a16a;z-index:90;transform:translateX(103%);transition:transform .55s var(--e);color:#fff8e8;display:flex;flex-direction:column;box-shadow:-16px 0 40px #0008;pointer-events:auto}
-#editor.open{transform:translateX(0)}
-.editor-header{padding:18px 18px 10px;display:flex;gap:10px;align-items:center;justify-content:space-between;border-bottom:1px solid #5c4a32}
-.editor-header h2{font-size:17px;margin:0}
-.editor-header button,.editor-actions button,.editor-pager button,.image-row button{border:1px solid #a57e49;border-radius:6px;background:#2e3540;color:#fff7e9;padding:7px 9px;font-size:12px;cursor:pointer}
-.editor-header button:hover,.editor-actions button:hover,.editor-pager button:hover{background:#65492d}
-.editor-pager{display:flex;gap:6px;padding:10px 16px;border-bottom:1px solid #5c4a32}
-.editor-pager button{flex:1}
-.editor-fields{padding:12px 16px;overflow:auto;flex:1;min-height:0}
-.editor-fields label{display:block;font-size:12px;margin:12px 0 4px;color:#efca84;font-weight:800}
-.editor-fields textarea{width:100%;border:1px solid #7c704f;background:#152531;color:#fff9ee;padding:8px 9px;border-radius:6px;min-height:52px;resize:vertical;font-size:13px;line-height:1.4}
-.editor-fields textarea.selected{border-color:#fff0b3;box-shadow:0 0 0 2px #f9d27955}
-.editor-fields .editor-note{font-size:11px;line-height:1.45;color:#c2bcaf}
-.image-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:11px 0;border-bottom:1px solid #5b4d38;font-size:12px}
-.editor-actions{padding:12px 16px;display:flex;gap:7px;flex-wrap:wrap;border-top:1px solid #5c4a32}
-.editor-actions button{flex:1 1 31%}
 #lightbox{position:absolute;inset:0;z-index:100;background:rgba(3,13,22,.96);display:none;align-items:center;justify-content:center;padding:5%;color:#fff5df;text-align:center}
 #lightbox.show{display:flex}
 #lightbox .lightbox-card{width:65%;min-height:42%;border:1px solid #d4ab65;background:radial-gradient(circle at 50% 10%,#3a444c,#112634);border-radius:calc(var(--u)*1);padding:calc(var(--u)*3);display:grid;place-items:center}
@@ -374,7 +363,7 @@ body[data-th='paper'] #ui button{background:rgba(255,248,234,.71)}
   .stamp,.motif.calendar,.motif.book,.motif.pen,.motif.bell,.motif.ruler{display:none}
   #overview{padding:9% 5%} .overview-title{font-size:22px;margin-bottom:5%}.overview-grid{grid-template-columns:repeat(2,1fr);gap:10px}
   .overview-tile{padding:9px}.overview-tile .small-num{font-size:14px}.overview-tile .small-title{font-size:12px}
-  #editor{width:min(92%,460px)}
+
   .memory-wall .memory{width:21%;height:14%;font-size:10px}.memory-wall .memory:nth-child(1){top:8%}.memory-wall .memory:nth-child(2){left:77%;top:8%}.memory-wall .memory:nth-child(3){top:77%}.memory-wall .memory:nth-child(4){left:77%;top:77%}
   #lightbox .lightbox-card{width:93%}#lightbox h2{font-size:23px}#lightbox p{font-size:15px}
 }
@@ -888,6 +877,15 @@ body.video-mode{background:#000}
   82%{transform:translate3d(2.1px,-1.6px,0) rotate(.85deg) scale(1.024)}
   90%{transform:translate3d(-.8px,.6px,0) rotate(-.25deg)}
 }
+.sc[data-layout='finale'] .clock-hands{display:block}
+.sc[data-layout='finale'].celebrate .clock-hands{animation:finaleClockHandsWrap 4.45s linear both}
+.sc[data-layout='finale'].celebrate .clock-hands .hand-minute{animation:finaleMinuteRush 4.45s linear both}
+.sc[data-layout='finale'].celebrate .clock-hands .hand-hour{animation:finaleHourRush 4.45s linear both}
+.sc[data-layout='finale'].celebrate .clock-hands .clock-cap{animation:finaleCapFlash 4.45s ease-out both}
+@keyframes finaleClockHandsWrap{0%{opacity:.98}86%{opacity:.98}100%{opacity:0}}
+@keyframes finaleMinuteRush{0%{rotate:126deg}86%{rotate:1566deg}100%{rotate:1566deg}}
+@keyframes finaleHourRush{0%{rotate:22deg}86%{rotate:412deg}100%{rotate:412deg}}
+@keyframes finaleCapFlash{0%,100%{box-shadow:0 0 calc(var(--u)*.9) rgba(255,221,126,.7)}20%{box-shadow:0 0 calc(var(--u)*1.2) rgba(255,236,171,.95),0 0 calc(var(--u)*2.2) rgba(255,194,81,.45)}40%{box-shadow:0 0 calc(var(--u)*1.3) rgba(255,236,171,.98),0 0 calc(var(--u)*2.5) rgba(255,194,81,.52)}70%{box-shadow:0 0 calc(var(--u)*1.0) rgba(255,221,126,.82),0 0 calc(var(--u)*1.8) rgba(255,194,81,.3)}}
 .sc[data-layout='finale'] .golden-halo{opacity:0;scale:.3;}
 .sc[data-layout='finale'].celebrate .golden-halo{animation:finaleHaloTriples 2.95s 0s linear both!important}
 .sc[data-layout='finale'].celebrate .golden-halo::before{animation:finaleHaloWave 0.7s .18s ease-out 3 both!important}
@@ -955,6 +953,8 @@ body.video-mode{background:#000}
   .sc[data-layout='finale'].celebrate .energy-core,
   .sc[data-layout='finale'].celebrate .energy-core::before,
   .sc[data-layout='finale'].celebrate .energy-core::after{animation:none!important}
+  .sc[data-layout='finale'] .clock-hands{opacity:0!important}
+  .sc[data-layout='finale'].celebrate .clock-hands,.sc[data-layout='finale'].celebrate .clock-hands .clock-hand,.sc[data-layout='finale'].celebrate .clock-hands .clock-cap{animation:none!important}
 }
 /* ========================================================
    FULLSCREEN FIX — phóng to cả trang để giữ sân khấu 16:9
@@ -1082,7 +1082,6 @@ html:fullscreen,html:fullscreen body{width:100%;height:100%;overflow:hidden}
         <button type="button" id="forwardBtn" title="Slide tiếp theo" aria-label="Slide tiếp theo"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></button>
         <button type="button" id="overviewBtn" title="Mở lưới tổng quan (G)" aria-label="Lưới tổng quan"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></button>
         <button type="button" id="fullscreenBtn" title="Toàn màn hình (F)" aria-label="Toàn màn hình"><svg viewBox="0 0 24 24"><path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5"/></svg></button>
-        <button type="button" id="editorBtn" title="Chế độ chỉnh sửa (S)" aria-label="Chỉnh sửa slide"><svg viewBox="0 0 24 24"><path d="M4 20h4l12-12-4-4L4 16zM14 6l4 4"/></svg></button>
       </div>
     </div><div id="progress"><div></div></div>
   </nav>
@@ -1096,13 +1095,6 @@ html:fullscreen,html:fullscreen body{width:100%;height:100%;overflow:hidden}
     <div class="outro-foot">Nhấn phát để xem cùng âm thanh • Nhấn ESC hoặc ĐÓNG VIDEO để quay lại</div>
   </section>
   <section id="overview" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Tổng quan slide"></section>
-  <aside id="editor" role="dialog" aria-label="Chỉnh sửa slide" aria-hidden="true">
-    <div class="editor-header"><h2>CHỈNH SỬA NỘI DUNG</h2><button id="closeEditor" type="button">Đóng ×</button></div>
-    <div class="editor-pager"><button id="editorPrev" type="button">← Slide trước</button><button id="editorNext" type="button">Slide sau →</button></div>
-    <div id="editFields" class="editor-fields"></div>
-    <div id="editNotice" role="status" style="font-size:12px;padding:0 12px;color:#efc980"></div>
-    <div class="editor-actions"><button id="saveHTML" type="button">Lưu HTML</button><button id="backupJSON" type="button">Sao lưu .json</button><button id="loadBackup" type="button">Nạp sao lưu</button><button id="restoreSlide" type="button">Khôi phục slide</button><button id="restoreAll" type="button">Khôi phục tất cả</button><input id="backupInput" type="file" accept="application/json,.json" hidden/></div>
-  </aside>
   <div id="lightbox" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Chi tiết minh họa"><button id="lightboxClose" type="button">Đóng ×</button><div class="lightbox-card"><div><h2 id="lightboxTitle"></h2><p id="lightboxDesc"></p></div></div></div>
   <div id="a11y" aria-live="polite" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden"></div>
   <div id="appStatus" aria-live="polite" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden"></div>
@@ -1544,31 +1536,16 @@ const stage=document.getElementById('stage');
 const $=(sel,root=document)=>root.querySelector(sel);
 const $$=(sel,root=document)=>Array.from(root.querySelectorAll(sel));
 const enc=(s)=>String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
-let edits={};let images={};let gameChoices=Array(G.length).fill(null),slideNodes=[],current=0,transitioning=false,editorOpen=false,overviewOpen=false,lightboxOpen=false,videoOpen=false,quietUntil=0,scrollAccum=0,scrollReset=null,celebrated=false,recapReadyAt=0;
-const storageKey='timegold:v15:editor:'+location.pathname;
-function loadLocal(){try{const x=JSON.parse(localStorage.getItem(storageKey)||'{}');edits={...(window.__EDITS?.text||{}),...(x.text||{})};images={...(window.__EDITS?.images||{})}}catch(err){edits={...(window.__EDITS?.text||{})};images={...(window.__EDITS?.images||{})}} /* One-time migration: update Gia Bảo’s previously saved role without affecting future edits. */try{const marker=storageKey+':gia-bao-role-v2';if(!localStorage.getItem(marker)){const k='1:members.0.role',wanted='Viết nội dung và lên ý tưởng\nThiết kế slide';if(Object.prototype.hasOwnProperty.call(edits,k)&&edits[k]!==wanted){edits[k]=wanted;localStorage.setItem(storageKey,JSON.stringify({text:edits,images}))}localStorage.setItem(marker,'1')}}catch(_){}}
-/* v16 migration: keep any custom thank-you edits on its new position (slide 16). */
-function migrateClosingEdits(){
- try{
-   const marker=storageKey+':separate-thanks-v1';
-   if(localStorage.getItem(marker))return;
-   const textKeys=['text.kicker','text.headline.0','text.headline.1','text.sub','text.body','text.tags.0','text.tags.1','text.tags.2','visualLabel','sticker'];
-   for(const k of textKeys){const old='14:'+k,now='15:'+k;if(Object.prototype.hasOwnProperty.call(edits,old)&&!Object.prototype.hasOwnProperty.call(edits,now)){edits[now]=edits[old];delete edits[old]}}
-   if(images['s15-clock']&&!images['s16-clock']){images['s16-clock']=images['s15-clock'];delete images['s15-clock']}
-   localStorage.setItem(storageKey,JSON.stringify({text:edits,images}));
-   localStorage.setItem(marker,'1');
- }catch(_){}
-}
-function persist(){try{localStorage.setItem(storageKey,JSON.stringify({text:edits,images}))}catch(e){if(editorOpen)showEditorMessage('Không lưu được vào trình duyệt: bộ nhớ có thể đã đầy. Hãy chọn “Lưu HTML”.')}}
+let edits={};let images={};let gameChoices=Array(G.length).fill(null),slideNodes=[],current=0,transitioning=false,overviewOpen=false,lightboxOpen=false,videoOpen=false,quietUntil=0,scrollAccum=0,scrollReset=null,celebrated=false,recapReadyAt=0;
 function V(i,key,raw){return Object.prototype.hasOwnProperty.call(edits,`${i}:${key}`)?edits[`${i}:${key}`]:raw}
-function dataEdit(i,key,text,label,extra=''){return `data-edit="${enc(key)}" data-edit-label="${enc(label||key)}" ${extra||''}`}
+function dataEdit(i,key,text,label,extra=''){return ''}
 function chars(txt,i,key,label,extrude=false){let str=String(V(i,key,txt)).normalize('NFC');let k=0;let units=typeof Intl.Segmenter==='function'?Array.from(new Intl.Segmenter('vi',{granularity:'grapheme'}).segment(str),x=>x.segment):Array.from(str).reduce((a,ch)=>{if(/[\u0300-\u036f]/u.test(ch)&&a.length)a[a.length-1]+=ch;else a.push(ch);return a},[]);return `<span class="hline" ${dataEdit(i,key,str,label)} aria-label="${enc(str)}"><span aria-hidden="true">${units.map(ch=>`<span class="glyph${ch===' '?' space':''}" style="--i:${k++}">${ch===' '? '&nbsp;':enc(ch)}</span>`).join('')}</span></span>`}
 function words(txt,i,key,label){let str=String(V(i,key,txt));let ws=str.split(/(\s+)/),n=0;return `<p class="body-copy" ${dataEdit(i,key,str,label)} aria-label="${enc(str)}">${ws.map(w=>/^\s+$/.test(w)?' ':`<span class="word" style="--i:${n++}">${enc(w)}</span>`).join('')}</p>`}
 function editText(i,key,raw,label,tag='span',cl=''){return `<${tag} class="${cl}" ${dataEdit(i,key,raw,label)}>${enc(V(i,key,raw))}</${tag}>`}
 function icon(name,klass=''){return `<svg class="${klass}" aria-hidden="true" viewBox="0 0 100 100"><use href="#i-${enc(name)}"></use></svg>`}
 function renderMotifs(i){const keys=['clock','book','pen','paper','hourglass','calendar','star','ruler','coin','bell'];return `<div class="amb-motifs" aria-hidden="true">${keys.map((k,j)=>`<div class="motif ${k} parallax" style="--d:${(j%4+1)*1.4};animation-delay:${-j*2.11}s">${icon(k)}</div>`).join('')}</div>`}
 function decor(i){return `<div class="backwash" aria-hidden="true"></div><div class="grid-mark parallax" style="--d:.5" aria-hidden="true"></div><div class="orbit-ray parallax" style="--d:1" aria-hidden="true"></div><div class="clock-rim parallax" style="--d:1.4" aria-hidden="true"></div>${renderMotifs(i)}`}
-function hero(i,s){let visual=s.visual||'clock',slot='s'+String(i+1).padStart(2,'0')+'-'+visual;return `<div class="visual parallax" style="--d:3" aria-label="Minh họa biểu tượng ${enc(visual)}"><div class="visual-slot" data-slot="${enc(slot)}"><svg class="rings" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" fill="none" stroke="currentColor" stroke-dasharray="2 4" stroke-width=".6"/><circle cx="50" cy="50" r="38" fill="none" stroke="currentColor" stroke-width=".4"/></svg>${icon(visual,'hero-icon')}<img class="photo-replacement" alt="Hình minh họa do người dùng thay thế"/><span class="visual-label">${enc(V(i,'visualLabel',s.visual==='clock'?'Khoảnh khắc quý giá':s.visual==='hourglass'?'Trân trọng từng phút':s.visual==='calendar'?'Sắp xếp hợp lý':s.visual==='balance'?'Một ngày cân bằng':'Hướng đến mục tiêu'))}</span></div></div>`}
+function hero(i,s){let visual=s.visual||'clock',slot='s'+String(i+1).padStart(2,'0')+'-'+visual;const clockOverlay=visual==='clock'?`<span class="clock-hands" aria-hidden="true"><i class="clock-hand hand-hour"></i><i class="clock-hand hand-minute"></i><i class="clock-cap"></i></span>`:'';return `<div class="visual parallax" style="--d:3" aria-label="Minh họa biểu tượng ${enc(visual)}"><div class="visual-slot" data-slot="${enc(slot)}"><svg class="rings" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" fill="none" stroke="currentColor" stroke-dasharray="2 4" stroke-width=".6"/><circle cx="50" cy="50" r="38" fill="none" stroke="currentColor" stroke-width=".4"/></svg>${icon(visual,'hero-icon')}${clockOverlay}<img class="photo-replacement" alt="Hình minh họa do người dùng thay thế"/><span class="visual-label">${enc(V(i,'visualLabel',s.visual==='clock'?'Khoảnh khắc quý giá':s.visual==='hourglass'?'Trân trọng từng phút':s.visual==='calendar'?'Sắp xếp hợp lý':s.visual==='balance'?'Một ngày cân bằng':'Hướng đến mục tiêu'))}</span></div></div>`}
 function copy(i,s){let t=s.text||{},heads=(t.headline||[]);return `<div class="copy parallax" style="--d:2"><div class="kicker" ${dataEdit(i,'text.kicker',t.kicker,'Dòng dẫn')}>${enc(V(i,'text.kicker',t.kicker||''))}</div><h1 class="headline" data-extrude="${['opener','finale','statement'].includes(s.layout)}">${heads.map((h,j)=>chars(h,i,`text.headline.${j}`,`Tiêu đề — dòng ${j+1}`)).join('')}</h1>${t.sub?editText(i,'text.sub',t.sub,'Phụ đề','p','sub'):''}${t.body?words(t.body,i,'text.body','Nội dung chính'):''}${t.tags?`<div class="tags">${t.tags.map((x,j)=>editText(i,`text.tags.${j}`,x,`Nhãn ${j+1}`,'span','tag')).join('')}</div>`:''}</div>`}
 function stamp(i,s){return `<div class="stamp" ${dataEdit(i,'sticker',s.sticker,'Con dấu')}>${enc(V(i,'sticker',s.sticker||''))}</div>`}
 function cards(i,s){let arr=s.cards||[];let cols=Math.min(arr.length,3);return `<div class="grid-cards" style="grid-template-columns:repeat(${cols},minmax(0,1fr))">${arr.map((c,j)=>`<article class="info-card parallax" style="--i:${j};--d:${1.4+j*.25}">${icon(c.icon||'book')}<span class="index">0${j+1}</span>${editText(i,`cards.${j}.title`,c.title,`Thẻ ${j+1} — tên`,'strong')}${editText(i,`cards.${j}.body`,c.body,`Thẻ ${j+1} — nội dung`,'p')}</article>`).join('')}</div>`}
@@ -1586,7 +1563,7 @@ function thanks(i,s){return `<div class="thanks-glow" aria-hidden="true"></div><
 
 function slideHtml(i,s){const content=copy(i,s);const art=hero(i,s);let inside='';switch(s.layout){case'cards':inside=content+cards(i,s);break;case'hinges':inside=content+hinges(i,s);break;case'timeline':inside=content+timeline(i,s);break;case'comparison':inside=content+comparison(i,s);break;case'document':inside=content+doc(i,s);break;case'game':inside=content+game(i,s);break;case'members':inside=content+members(i,s);break;case'finale':inside=content;break;default:inside=content+art;}if(['cards','hinges','timeline','comparison','document','game','members'].includes(s.layout)){inside+=`<div class="visual" style="display:none"></div>`;}return `<section class="sc gone" data-theme="${enc(s.theme)}" data-layout="${enc(s.layout)}" data-index="${i}" role="group" aria-label="Slide ${i+1}: ${enc(s.name)}">${decor(i)}<svg class="path-lines" viewBox="0 0 1000 562" aria-hidden="true"><path d="M 36 420 C 180 330, 150 100, 340 85 S 770 470, 975 130"></path><path class="draw-path" pathLength="1" d="M 36 420 C 180 330, 150 100, 340 85 S 770 470, 975 130" style="stroke-width:.6;opacity:.55"></path><circle cx="0" cy="0" r="4" fill="currentColor" stroke="none"><animateMotion dur="15s" repeatCount="indefinite" path="M 36 420 C 180 330, 150 100, 340 85 S 770 470, 975 130" /></circle></svg><div class="content">${inside}</div>${stamp(i,s)}${s.layout==='opener'?'<div class="front-haze"></div>':''}${s.layout==='finale'?art+finale(i,s):s.layout==='thanks'?thanks(i,s):''}</section>`}
 function renderAll(){const old=stage.querySelectorAll('.sc,.symbol-bank');old.forEach(n=>n.remove());stage.insertAdjacentHTML('afterbegin',SVG_SYMBOLS);stage.insertAdjacentHTML('beforeend',S.map((s,i)=>slideHtml(i,s)).join(''));slideNodes=$$('.sc',stage);S.forEach((_,i)=>applyPhoto(i));S.forEach((_,i)=>{if(S[i].game!==undefined)applyGameState(i)})}
-function renderOne(i){const old=slideNodes[i];if(!old)return;let was=old.className;let wasActive=old.classList.contains('on');let html=slideHtml(i,S[i]);old.insertAdjacentHTML('afterend',html);const ne=old.nextElementSibling;old.remove();slideNodes[i]=ne;ne.className=was;if(wasActive)ne.classList.add('on');applyPhoto(i);if(S[i].game!==undefined)applyGameState(i);if(editorOpen)highlightEditable()}
+function renderOne(i){const old=slideNodes[i];if(!old)return;let was=old.className;let wasActive=old.classList.contains('on');let html=slideHtml(i,S[i]);old.insertAdjacentHTML('afterend',html);const ne=old.nextElementSibling;old.remove();slideNodes[i]=ne;ne.className=was;if(wasActive)ne.classList.add('on');applyPhoto(i);if(S[i].game!==undefined)applyGameState(i);}
 function applyPhoto(i){let root=slideNodes[i];if(!root)return;let box=$('[data-slot]',root);if(!box)return;let slot=box.getAttribute('data-slot'),img=$('img.photo-replacement',box);if(images[slot]){img.src=images[slot];box.classList.add('has-photo')}else{img.removeAttribute('src');box.classList.remove('has-photo')}}
 
 /* =========================================================
@@ -1608,13 +1585,13 @@ function updateUI(){
  $('#stepHint').textContent=videoOpen?'VIDEO CUỐI BÀI • ESC ĐỂ QUAY LẠI':s.layout==='game'?(gameChoices[s.game]===G[s.game].key?'ĐÚNG RỒI • BẤM TIẾP TỤC':'CHỌN LẠI ĐẾN KHI ĐÚNG'):s.layout==='finale'?(!celebrated?'BẤM RÚT RA BÀI HỌC':performance.now()<recapReadyAt?'ĐANG HIỆN BÀI HỌC':'CHUYỂN ĐẾN LỜI CẢM ƠN'):s.layout==='thanks'?'BẤM XEM VIDEO CUỐI BÀI':'CUỘN / VUỐT / KÉO ĐỂ CHUYỂN SLIDE';
 }
 
-function revealSlide(i){current=i;slideNodes.forEach((el,j)=>{if(j===i)el.className='sc on';else if(Math.abs(i-j)===1)el.className='sc pre';else el.className='sc gone'});warmSlides(i);updateUI();setHash(i);if(editorOpen)refreshEditor()}
-function navigate(to,force=false){if(videoOpen){if(to<current)closeOutro();else return;}if((transitioning&&!force)||editorOpen||overviewOpen||lightboxOpen)return;if(!force&&to>current&&S[current].game!==undefined&&gameChoices[S[current].game]!==G[S[current].game].key){announce('Hãy chọn đáp án đúng để tiếp tục.');return;}if(!force&&to>current&&S[current].layout==='finale'){if(!celebrated){triggerFinale();return}if(performance.now()<recapReadyAt){announce('Bài học đang lần lượt hiện ra.');return}}if(to<0||to>=S.length){if(to>=S.length&&current===S.length-1){announce('Nhấn nút Xem video cuối bài để phát video.');}return}if(to===current)return;const prev=current,dir=to>current?1:-1;transitioning=true;quietUntil=performance.now()+1560;stage.style.setProperty('--dir',dir);const wipe=$('#wipe');wipe.classList.toggle('rev',dir<0);wipe.classList.add('active');slideNodes[to].className='sc pre';slideNodes[prev].className='sc out';setTimeout(()=>{current=to;slideNodes[prev].className='sc gone';slideNodes[to].className='sc on';S.forEach((_,k)=>{if(k!==to&&k!==prev)slideNodes[k].className=Math.abs(k-to)===1?'sc pre':'sc gone'});updateUI();setHash(to);warmSlides(to);if(editorOpen)refreshEditor()},665);setTimeout(()=>{wipe.classList.remove('active');transitioning=false;quietUntil=performance.now()+190},1420)}
-function wheelHandler(e){if(videoOpen){e.preventDefault();return}if(e.target.closest('#editor,#overview,#lightbox'))return;if(editorOpen||overviewOpen||lightboxOpen||transitioning||performance.now()<quietUntil){e.preventDefault();return}e.preventDefault();const raw=Math.max(-150,Math.min(150,e.deltaY*(e.deltaMode===1?12:e.deltaMode===2?300:1)));scrollAccum+=raw;clearTimeout(scrollReset);scrollReset=setTimeout(()=>{scrollAccum=0},140);if(Math.abs(scrollAccum)<55)return;const d=Math.sign(scrollAccum);scrollAccum=0;onStep(d)}
+function revealSlide(i){current=i;slideNodes.forEach((el,j)=>{if(j===i)el.className='sc on';else if(Math.abs(i-j)===1)el.className='sc pre';else el.className='sc gone'});warmSlides(i);updateUI();setHash(i);}
+function navigate(to,force=false){if(videoOpen){if(to<current)closeOutro();else return;}if((transitioning&&!force)||overviewOpen||lightboxOpen)return;if(!force&&to>current&&S[current].game!==undefined&&gameChoices[S[current].game]!==G[S[current].game].key){announce('Hãy chọn đáp án đúng để tiếp tục.');return;}if(!force&&to>current&&S[current].layout==='finale'){if(!celebrated){triggerFinale();return}if(performance.now()<recapReadyAt){announce('Bài học đang lần lượt hiện ra.');return}}if(to<0||to>=S.length){if(to>=S.length&&current===S.length-1){announce('Nhấn nút Xem video cuối bài để phát video.');}return}if(to===current)return;const prev=current,dir=to>current?1:-1;transitioning=true;quietUntil=performance.now()+1560;stage.style.setProperty('--dir',dir);const wipe=$('#wipe');wipe.classList.toggle('rev',dir<0);wipe.classList.add('active');slideNodes[to].className='sc pre';slideNodes[prev].className='sc out';setTimeout(()=>{current=to;slideNodes[prev].className='sc gone';slideNodes[to].className='sc on';S.forEach((_,k)=>{if(k!==to&&k!==prev)slideNodes[k].className=Math.abs(k-to)===1?'sc pre':'sc gone'});updateUI();setHash(to);warmSlides(to);},665);setTimeout(()=>{wipe.classList.remove('active');transitioning=false;quietUntil=performance.now()+190},1420)}
+function wheelHandler(e){if(videoOpen){e.preventDefault();return}if(e.target.closest('#overview,#lightbox'))return;if(overviewOpen||lightboxOpen||transitioning||performance.now()<quietUntil){e.preventDefault();return}e.preventDefault();const raw=Math.max(-150,Math.min(150,e.deltaY*(e.deltaMode===1?12:e.deltaMode===2?300:1)));scrollAccum+=raw;clearTimeout(scrollReset);scrollReset=setTimeout(()=>{scrollAccum=0},140);if(Math.abs(scrollAccum)<55)return;const d=Math.sign(scrollAccum);scrollAccum=0;onStep(d)}
 function onStep(dir){if(videoOpen){if(dir<0)closeOutro();return}if(dir>0&&current===S.length-1){announce('Nhấn Xem video cuối bài nếu bạn muốn phát video.');return}navigate(current+dir)}
 /* Slide gestures: swipe/drag LEFT = next, RIGHT = previous. Ignore controls/overlays. */
-const slideGestureBlocked='button,a,input,textarea,select,[contenteditable],#editor,#overview,#lightbox,#videoOutro,[data-memory]';
-function gestureAllowed(target){return !videoOpen&&!editorOpen&&!overviewOpen&&!lightboxOpen&&!transitioning&&performance.now()>=quietUntil&&!target.closest(slideGestureBlocked)}
+const slideGestureBlocked='button,a,input,textarea,select,[contenteditable],#overview,#lightbox,#videoOutro,[data-memory]';
+function gestureAllowed(target){return !videoOpen&&!overviewOpen&&!lightboxOpen&&!transitioning&&performance.now()>=quietUntil&&!target.closest(slideGestureBlocked)}
 function touchHandlers(){
  let start=null;
  stage.addEventListener('touchstart',e=>{
@@ -1626,7 +1603,7 @@ function touchHandlers(){
   if(!start||e.changedTouches.length!==1){start=null;return}
   const dx=e.changedTouches[0].clientX-start.x,dy=e.changedTouches[0].clientY-start.y;
   start=null;
-  if(videoOpen||editorOpen||overviewOpen||lightboxOpen||transitioning||performance.now()<quietUntil)return;
+  if(videoOpen||overviewOpen||lightboxOpen||transitioning||performance.now()<quietUntil)return;
   if(Math.abs(dx)>62&&Math.abs(dx)>Math.abs(dy)*1.2)onStep(dx>0?-1:1);
   else if(Math.abs(dy)>55&&Math.abs(dy)>Math.abs(dx)*1.2)onStep(dy<0?1:-1);
  },{passive:true});
@@ -1645,7 +1622,7 @@ function mouseDragHandlers(){
   const dx=e.clientX-start.x,dy=e.clientY-start.y;
   start=null;
   if(Math.abs(dx)<68||Math.abs(dx)<Math.abs(dy)*1.25)return;
-  if(videoOpen||editorOpen||overviewOpen||lightboxOpen||transitioning||performance.now()<quietUntil)return;
+  if(videoOpen||overviewOpen||lightboxOpen||transitioning||performance.now()<quietUntil)return;
   ignoreNextClick=true;
   onStep(dx>0?-1:1);
  });
@@ -1656,7 +1633,7 @@ function mouseDragHandlers(){
   if(ignoreNextClick){ignoreNextClick=false;e.preventDefault();e.stopImmediatePropagation()}
  },true);
 }
-function keys(e){if(videoOpen){if(e.key==='Escape'||e.key==='ArrowLeft'){e.preventDefault();closeOutro()}return}const el=document.activeElement,editing=el&&(el.isContentEditable||['INPUT','TEXTAREA','SELECT'].includes(el.tagName));if(e.key==='Escape'){if(lightboxOpen)closeLightbox();else if(overviewOpen)toggleOverview(false);else if(editorOpen)toggleEditor(false);return}if(editing)return;if(e.key.toLowerCase()==='s'){e.preventDefault();toggleEditor();return}if(e.key.toLowerCase()==='g'){e.preventDefault();toggleOverview();return}if(e.key.toLowerCase()==='f'){e.preventDefault();toggleFullscreen();return}if(overviewOpen||lightboxOpen||editorOpen)return;if(['ArrowRight','ArrowDown','PageDown',' '].includes(e.key)){e.preventDefault();onStep(1)}else if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){e.preventDefault();onStep(-1)}else if(e.key==='Home'){e.preventDefault();navigate(0)}else if(e.key==='End'){e.preventDefault();navigate(S.length-1)}}
+function keys(e){if(videoOpen){if(e.key==='Escape'||e.key==='ArrowLeft'){e.preventDefault();closeOutro()}return}const el=document.activeElement,editing=el&&(el.isContentEditable||['INPUT','TEXTAREA','SELECT'].includes(el.tagName));if(e.key==='Escape'){if(lightboxOpen)closeLightbox();else if(overviewOpen)toggleOverview(false);else return}if(editing)return;if(e.key.toLowerCase()==='g'){e.preventDefault();toggleOverview();return}if(e.key.toLowerCase()==='f'){e.preventDefault();toggleFullscreen();return}if(overviewOpen||lightboxOpen)return;if(['ArrowRight','ArrowDown','PageDown',' '].includes(e.key)){e.preventDefault();onStep(1)}else if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){e.preventDefault();onStep(-1)}else if(e.key==='Home'){e.preventDefault();navigate(0)}else if(e.key==='End'){e.preventDefault();navigate(S.length-1)}}
 function toggleFullscreen(){
  try{
   if(document.fullscreenElement){
@@ -1686,7 +1663,7 @@ function gameClick(e){const b=e.target.closest('[data-choice]');if(b){e.stopProp
    ========================================================= */
 let pointerRAF=null,pointerEvent=null,pointerCache=null,pointerCacheTime=0;
 function pointerMove(e){if(videoOpen)return;const bounds=stage.getBoundingClientRect();let mx=Math.max(-1,Math.min(1,(e.clientX-bounds.left)/bounds.width*2-1));let my=Math.max(-1,Math.min(1,(e.clientY-bounds.top)/bounds.height*2-1));stage.style.setProperty('--mx',mx.toFixed(2));stage.style.setProperty('--my',my.toFixed(2));$$('.parallax',slideNodes[current]).forEach(el=>{let d=Number(el.style.getPropertyValue('--d'))||1;el.style.setProperty('--px',(mx*d*3.0)+'px');el.style.setProperty('--py',(my*d*2.1)+'px')});pointerEvent={x:e.clientX,y:e.clientY};if(!pointerRAF)pointerRAF=requestAnimationFrame(proximity)}
-function proximity(t){pointerRAF=null;if(transitioning||editorOpen||!pointerEvent)return;if(t-pointerCacheTime>150||!pointerCache){pointerCache=$$('.glyph,.word',slideNodes[current]).slice(0,110).map(el=>[el,el.getBoundingClientRect()]);pointerCacheTime=t}for(const [el,r] of pointerCache){const x=r.left+r.width/2-pointerEvent.x,y=r.top+r.height/2-pointerEvent.y,dist2=x*x+y*y,p=Math.max(0,1-dist2/(200*200));el.style.setProperty('--p',(p*p).toFixed(3));el.style.textShadow=p>0.08?`0 0 ${Math.round(p*16)}px rgba(255,220,135,${.35*p})`:''}}
+function proximity(t){pointerRAF=null;if(transitioning||!pointerEvent)return;if(t-pointerCacheTime>150||!pointerCache){pointerCache=$$('.glyph,.word',slideNodes[current]).slice(0,110).map(el=>[el,el.getBoundingClientRect()]);pointerCacheTime=t}for(const [el,r] of pointerCache){const x=r.left+r.width/2-pointerEvent.x,y=r.top+r.height/2-pointerEvent.y,dist2=x*x+y*y,p=Math.max(0,1-dist2/(200*200));el.style.setProperty('--p',(p*p).toFixed(3));el.style.textShadow=p>0.08?`0 0 ${Math.round(p*16)}px rgba(255,220,135,${.35*p})`:''}}
 function particleSystem(){const cn=$('#ambientDust'),cx=cn.getContext('2d',{alpha:true});let dots=[],last=0,mobile=matchMedia('(max-aspect-ratio:1/1)').matches;const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;function resize(){const b=stage.getBoundingClientRect(),dpr=Math.min(devicePixelRatio||1,1.6);cn.width=Math.round(b.width*dpr);cn.height=Math.round(b.height*dpr);cx.setTransform(dpr,0,0,dpr,0,0);dots=Array.from({length:mobile?14:44},(_,i)=>({x:Math.random()*b.width,y:Math.random()*b.height,v:.1+Math.random()*.3,r:.4+Math.random()*1.3,p:Math.random()*6.28}));return b}let rect=resize();const ro=new ResizeObserver(()=>{mobile=matchMedia('(max-aspect-ratio:1/1)').matches;rect=resize()});ro.observe(stage);function tick(t){requestAnimationFrame(tick);if(document.hidden||videoOpen||!slideNodes[current]||t-last<35)return;last=t;cx.clearRect(0,0,rect.width,rect.height);cx.fillStyle=S[current].theme==='paper'?'rgba(119,86,46,.32)':'rgba(245,209,145,.45)';dots.forEach(p=>{if(!reduce){p.y-=p.v;p.x+=Math.sin(t*.00035+p.p)*.12;if(p.y<0){p.y=rect.height;p.x=Math.random()*rect.width}}cx.globalAlpha=.18+.7*Math.abs(Math.sin(t*.0004+p.p));cx.beginPath();cx.arc(p.x,p.y,p.r,0,Math.PI*2);cx.fill()});cx.globalAlpha=1}requestAnimationFrame(tick)}
 /* Firework particle finale: original golden clockwork sparks, accessible without WebGL */
 const sparkCanvas=$('#celebrateCanvas');let sparks=[],sparkAnimating=false;
@@ -1759,7 +1736,7 @@ function triggerFinale(){
 
 /* Video chỉ xuất hiện ở slide 16 — Trân trọng cảm ơn. */
 function openOutro(){
- if(videoOpen||S[current].layout!=='thanks'||transitioning||editorOpen||overviewOpen||lightboxOpen)return;
+ if(videoOpen||S[current].layout!=='thanks'||transitioning||overviewOpen||lightboxOpen)return;
  videoOpen=true;const viewer=$('#videoOutro'),player=$('#outroPlayer');
  viewer.classList.add('open');viewer.setAttribute('aria-hidden','false');stage.classList.add('outro-open');
  quietUntil=performance.now()+250;updateUI();
@@ -1779,36 +1756,20 @@ function announce(s){const el=$('#a11y');el.textContent=s}
 /* =========================================================
    MODULE: overview, deep-dive/memory lightbox and user images.
    ========================================================= */
-function toggleOverview(show=!overviewOpen){if(videoOpen)closeOutro();if(editorOpen)toggleEditor(false);overviewOpen=show;const el=$('#overview');el.classList.toggle('show',show);el.setAttribute('aria-hidden',String(!show));if(show){el.innerHTML=`<h2 class="overview-title">Toàn cảnh 16 slide — Thời gian là vàng</h2><button class="overview-close" type="button" id="closeOverview">Đóng ×</button><div class="overview-grid">${S.map((s,i)=>`<button type="button" class="overview-tile" data-goto="${i}" style="--i:${i}" aria-label="Đi đến slide ${i+1}: ${enc(s.name)}"><span class="small-num">${String(i+1).padStart(2,'0')}</span><span class="small-title">${enc(s.name)}</span></button>`).join('')}</div>`;$('#closeOverview').focus()}else{el.innerHTML='';$('#overviewBtn').focus()}}
+function toggleOverview(show=!overviewOpen){if(videoOpen)closeOutro();overviewOpen=show;const el=$('#overview');el.classList.toggle('show',show);el.setAttribute('aria-hidden',String(!show));if(show){el.innerHTML=`<h2 class="overview-title">Toàn cảnh 16 slide — Thời gian là vàng</h2><button class="overview-close" type="button" id="closeOverview">Đóng ×</button><div class="overview-grid">${S.map((s,i)=>`<button type="button" class="overview-tile" data-goto="${i}" style="--i:${i}" aria-label="Đi đến slide ${i+1}: ${enc(s.name)}"><span class="small-num">${String(i+1).padStart(2,'0')}</span><span class="small-title">${enc(s.name)}</span></button>`).join('')}</div>`;$('#closeOverview').focus()}else{el.innerHTML='';$('#overviewBtn').focus()}}
 function openLightbox(title,description){lightboxOpen=true;const el=$('#lightbox');el.classList.add('show');el.setAttribute('aria-hidden','false');$('#lightboxTitle').textContent=title;$('#lightboxDesc').textContent=description;$('#lightboxClose').focus()}
 function closeLightbox(){lightboxOpen=false;$('#lightbox').classList.remove('show');$('#lightbox').setAttribute('aria-hidden','true')}
 
 /* =========================================================
-   MODULE: EDITOR. Live fields, image replacement, persistence,
-   offline HTML export, JSON backup, restoration, content selection.
-   ========================================================= */
-function toggleEditor(show=!editorOpen){if(videoOpen)closeOutro();if(overviewOpen)toggleOverview(false);editorOpen=show;$('#editor').classList.toggle('open',show);$('#editor').setAttribute('aria-hidden',String(!show));if(show)refreshEditor()}
-function highlightEditable(){/* data-edit remains on rebuilt char/word wrappers */}
-function refreshEditor(){if(!editorOpen)return;const root=slideNodes[current],nodes=$$('[data-edit]',root);let keys=new Set();const container=$('#editFields');container.innerHTML=`<div class="editor-note">Slide ${current+1}/${S.length} · ${enc(S[current].name)}<p>Nhấn vào chữ trên slide để chọn trường. Mỗi thay đổi giữ lại hiệu ứng gốc.</p></div>`;nodes.forEach(el=>{let key=el.dataset.edit;if(keys.has(key))return;keys.add(key);let label=el.dataset.editLabel||key,raw=edits[`${current}:${key}`]??el.textContent.trim();const l=document.createElement('label');l.textContent=label;l.htmlFor='field-'+keys.size;const area=document.createElement('textarea');area.id=l.htmlFor;area.dataset.field=key;area.value=raw;area.rows=Math.min(5,Math.max(2,Math.ceil(raw.length/42)));area.addEventListener('input',()=>{edits[`${current}:${key}`]=area.value;persist();renderOne(current)});container.append(l,area)});const visual=$('[data-slot]',root);if(visual){const block=document.createElement('div');block.className='image-row';block.innerHTML=`<div><b>Hình minh họa</b><div>${enc(visual.dataset.slot)}</div></div>`;const btn=document.createElement('button');btn.textContent='Thay ảnh';btn.type='button';const input=document.createElement('input');input.type='file';input.accept='image/*';input.hidden=true;btn.onclick=()=>input.click();input.onchange=async()=>{const file=input.files?.[0];if(!file)return;try{const data=await downscaleImage(file);images[visual.dataset.slot]=data;persist();applyPhoto(current)}catch(err){showEditorMessage('Không thể đọc ảnh. Hãy chọn định dạng PNG/JPG/WebP.')}};const restore=document.createElement('button');restore.type='button';restore.textContent='Khôi phục';restore.onclick=()=>{delete images[visual.dataset.slot];persist();applyPhoto(current)};block.append(btn,restore,input);container.append(block)}const info=document.createElement('p');info.className='editor-note';info.textContent='Có 5 trò chơi với đáp án cố định B–A–C–D–C. Chọn sai có thể thử lại cho đến khi đúng.';container.append(info)}
-function showEditorMessage(str){const el=$('#editNotice');el.textContent=str;setTimeout(()=>{if(el.textContent===str)el.textContent=''},5000)}
-function downscaleImage(file){return new Promise((res,rej)=>{const url=URL.createObjectURL(file),im=new Image();im.onload=()=>{try{let w=im.naturalWidth,h=im.naturalHeight,ratio=Math.min(1,1920/w,1920/h);const canvas=document.createElement('canvas');canvas.width=Math.round(w*ratio);canvas.height=Math.round(h*ratio);canvas.getContext('2d').drawImage(im,0,0,canvas.width,canvas.height);URL.revokeObjectURL(url);res(canvas.toDataURL('image/jpeg',.83))}catch(e){rej(e)}};im.onerror=rej;im.src=url})}
-function restoreSlide(){Object.keys(edits).filter(k=>k.startsWith(current+':')).forEach(k=>delete edits[k]);const slot=$('[data-slot]',slideNodes[current])?.dataset.slot;if(slot)delete images[slot];persist();renderOne(current);refreshEditor()}
-function restoreAll(){edits={};images={};persist();renderAll();revealSlide(current);refreshEditor();showEditorMessage('Đã khôi phục chữ và ảnh của toàn bộ slide. Trạng thái trả lời vẫn được giữ nguyên.')}
-function downloadFile(content,name,mime){const blob=content instanceof Blob?content:new Blob([content],{type:mime});const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),15000)}
-function saveHtml(){const clone=document.documentElement.cloneNode(true);const stale=clone.querySelector('#baked-edits');if(stale)stale.remove();const script=document.createElement('script');script.id='baked-edits';script.textContent='window.__EDITS='+JSON.stringify({text:edits,images:images}).replace(/</g,'\\u003c')+';';const last=clone.querySelector('#application-script');if(last)last.parentNode.insertBefore(script,last);else clone.querySelector('body').appendChild(script);clone.querySelector('#editor').classList.remove('open');clone.querySelector('#overview').classList.remove('show');clone.querySelector('#lightbox').classList.remove('show');clone.querySelector('#videoOutro').classList.remove('open');clone.querySelector('#stage').classList.remove('outro-open');downloadFile('<!doctype html>\n'+clone.outerHTML,'THOI_GIAN_LA_VANG_NHOM_1_DA_CHINH_SUA.html','text/html;charset=utf-8');showEditorMessage('Đã xuất file HTML ngoại tuyến với các thay đổi đã nhúng.')}
-function backupJson(){downloadFile(JSON.stringify({version:1,topic:'Thời gian là vàng',text:edits,images},null,2),'THOI_GIAN_LA_VANG_BACKUP.json','application/json')}
-function importBackup(file){if(!file)return;const fr=new FileReader();fr.onload=()=>{try{let obj=JSON.parse(fr.result);edits=obj.text||{};images=obj.images||{};persist();renderAll();revealSlide(current);refreshEditor();showEditorMessage('Đã nạp bản sao lưu thành công.')}catch(err){showEditorMessage('File JSON không hợp lệ.')}};fr.readAsText(file)}
-
-/* =========================================================
    EVENTS + INIT; no frameworks, no network, offline-ready.
    ========================================================= */
-function wireEvents(){stage.addEventListener('click',e=>{if(editorOpen&&e.target.closest('[data-edit]')){const fld=e.target.closest('[data-edit]').dataset.edit,area=$(`textarea[data-field="${CSS.escape(fld)}"]`,$('#editor'));if(area){e.preventDefault();e.stopPropagation();area.focus();area.classList.add('selected');area.scrollIntoView({block:'nearest'});setTimeout(()=>area.classList.remove('selected'),1400);return}}gameClick(e);if(e.target.closest('#finaleBtn')){e.preventDefault();triggerFinale();return}if(e.target.closest('#recapContinue')){e.preventDefault();navigate(current+1);return}if(e.target.closest('#outroLaunch')){e.preventDefault();openOutro();return}const mem=e.target.closest('[data-memory]');if(mem){let ix=Number(mem.dataset.memory);openLightbox(['Khái niệm','Định nghĩa','Lợi ích của quản lý thời gian','Bài học rút ra'][ix],['Có 1 khái niệm trọng tâm trong bài thuyết trình này.','Có 1 định nghĩa: quản lý thời gian hiệu quả là biết sắp xếp và phân bổ thời gian hợp lý để đạt mục tiêu.','Có 3 lợi ích chính: hoàn thành đúng hạn, giảm căng thẳng và cân bằng học tập, nghỉ ngơi, giải trí.','Có 1 bài học rút ra: thời gian là vàng khi chúng ta biết sử dụng hợp lý.'][ix])}});
- $('#videoOutroClose').onclick=closeOutro; $('#backBtn').onclick=()=>navigate(current-1);$('#forwardBtn').onclick=()=>onStep(1);$('#overviewBtn').onclick=()=>toggleOverview();$('#fullscreenBtn').onclick=toggleFullscreen;$('#editorBtn').onclick=()=>toggleEditor();$('#closeEditor').onclick=()=>toggleEditor(false);$('#editorPrev').onclick=()=>{let i=Math.max(0,current-1);revealSlide(i)};$('#editorNext').onclick=()=>{let i=Math.min(S.length-1,current+1);revealSlide(i)};
+function wireEvents(){stage.addEventListener('click',e=>{gameClick(e);if(e.target.closest('#finaleBtn')){e.preventDefault();triggerFinale();return}if(e.target.closest('#recapContinue')){e.preventDefault();navigate(current+1);return}if(e.target.closest('#outroLaunch')){e.preventDefault();openOutro();return}const mem=e.target.closest('[data-memory]');if(mem){let ix=Number(mem.dataset.memory);openLightbox(['Khái niệm','Định nghĩa','Lợi ích của quản lý thời gian','Bài học rút ra'][ix],['Có 1 khái niệm trọng tâm trong bài thuyết trình này.','Có 1 định nghĩa: quản lý thời gian hiệu quả là biết sắp xếp và phân bổ thời gian hợp lý để đạt mục tiêu.','Có 3 lợi ích chính: hoàn thành đúng hạn, giảm căng thẳng và cân bằng học tập, nghỉ ngơi, giải trí.','Có 1 bài học rút ra: thời gian là vàng khi chúng ta biết sử dụng hợp lý.'][ix])}});
+ $('#videoOutroClose').onclick=closeOutro; $('#backBtn').onclick=()=>navigate(current-1);$('#forwardBtn').onclick=()=>onStep(1);$('#overviewBtn').onclick=()=>toggleOverview();$('#fullscreenBtn').onclick=toggleFullscreen;
  $('#overview').addEventListener('click',e=>{if(e.target.closest('#closeOverview'))toggleOverview(false);let n=e.target.closest('[data-goto]');if(n){let idx=Number(n.dataset.goto);toggleOverview(false);navigate(idx)}});
- $('#lightboxClose').onclick=closeLightbox;$('#lightbox').addEventListener('click',e=>{if(e.target===$('#lightbox'))closeLightbox()});$('#saveHTML').onclick=saveHtml;$('#backupJSON').onclick=backupJson;$('#loadBackup').onclick=()=>$('#backupInput').click();$('#backupInput').onchange=e=>importBackup(e.target.files?.[0]);$('#restoreSlide').onclick=restoreSlide;$('#restoreAll').onclick=restoreAll;
- stage.addEventListener('wheel',wheelHandler,{passive:false,capture:true});touchHandlers();mouseDragHandlers();document.addEventListener('keydown',keys);stage.addEventListener('pointermove',pointerMove,{passive:true});window.addEventListener('hashchange',()=>{const ix=indexFromHash();if(ix!==current&&!editorOpen&&!overviewOpen&&!transitioning)navigate(ix)});
+ $('#lightboxClose').onclick=closeLightbox;$('#lightbox').addEventListener('click',e=>{if(e.target===$('#lightbox'))closeLightbox()});
+ stage.addEventListener('wheel',wheelHandler,{passive:false,capture:true});touchHandlers();mouseDragHandlers();document.addEventListener('keydown',keys);stage.addEventListener('pointermove',pointerMove,{passive:true});window.addEventListener('hashchange',()=>{const ix=indexFromHash();if(ix!==current&&!overviewOpen&&!transitioning)navigate(ix)});
 }
-function init(){loadLocal();migrateClosingEdits();renderAll();revealSlide(indexFromHash());wireEvents();particleSystem();$('#appStatus').textContent='Đã tải 16 slide, 5 trò chơi và video cuối bài. File video đặt cùng thư mục với HTML để trình chiếu cả khi ngoại tuyến.'}
+function init(){renderAll();revealSlide(indexFromHash());wireEvents();particleSystem();$('#appStatus').textContent='Đã tải 16 slide, 5 trò chơi và video cuối bài. File video đặt cùng thư mục với HTML để trình chiếu cả khi ngoại tuyến.'}
 init();
 </script>
 </body></html>
